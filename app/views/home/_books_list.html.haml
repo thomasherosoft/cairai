@@ -1,0 +1,19 @@
+- unless books.empty?
+  - books.each do |book|
+    .col-md-4.col-sm-4.slide_img
+      .col-md-6.img_hover.index_img_height
+        = link_to image_tag(book.book_cover.photo.url(:medium)), book_path(book), :title => "#{book.title.camelize}"
+      .col-md-6
+        %h2
+          = link_to "#{truncate(book.title.camelize, :length => 20)}", book_path(book), :title => "#{book.title.camelize}"
+        %p 
+          = "#{truncate(book.description, :length => 385)}"
+- else
+  .row 
+    .alert.alert-warning
+      %button.close{"data-dismiss" => "alert", :type => "button"} &times;
+      %strong Warning!
+      Sorry, No books available...
+.col-md-12.col-sm-12
+  .center
+    = paginate books, :remote => true, :params => { :controller => "home", :action => "load_more_books" }

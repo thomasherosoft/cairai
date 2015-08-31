@@ -1,0 +1,9 @@
+== README
+
+This is the version .1 of Cairai. Cairai is a way that will improve communication between content creators and their audience. It will also stop piracy and adblock by intergrating users into our system.
+
+________________________________
+
+Version .1
+
+ created the initial start of the test app

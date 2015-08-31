@@ -1,0 +1,19 @@
+- unless comics.empty?
+  - comics.each do |comic|
+    .col-md-4.col-sm-4.slide_img
+      .col-md-6.img_hover.index_img_height
+        = link_to(image_tag(comic.comic_cover.photo.url(:medium)), comic_path(comic), :title => "#{comic.title.camelize}")
+      .col-md-6
+        %h2
+          = link_to "#{truncate(comic.title.camelize, :length => 20)}", comic_path(comic), :title => "#{comic.title.camelize}"
+        %p
+          = "#{truncate(comic.description, :length => 385)}"
+- else
+  .row 
+    .alert.alert-warning
+      %button.close{"data-dismiss" => "alert", :type => "button"} &times;
+      %strong Warning!
+      Sorry, No comics available...           
+.col-md-12.col-sm-12
+  .center
+    = paginate comics, :remote => true, :params => { :controller => "home", :action => "load_more_comics" }

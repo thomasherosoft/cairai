@@ -1,0 +1,25 @@
+%ul.dropdown-menu
+  %li
+    = link_to(profile_path, :method => :get) do
+      %i.fa.fa-user>
+      Profile
+  %li
+    = link_to("#", :method => :get) do
+      %i.fa.fa-usd
+      Coin Shop
+  %li
+    = link_to(user_books_path(current_user), :method => :get) do
+      %i.fa.fa-file-o
+      Book Feed
+  %li
+    = link_to(user_comics_path(current_user), :method => :get) do
+      %i.fa.fa-file-o
+      Comic Feed
+  %li
+    = link_to(new_user_book_path(current_user), :method => :get) do
+      %i.fa.fa-upload
+      Upload
+  %li
+    = link_to(destroy_user_session_path, :method => :delete) do
+      %i.fa.fa-power-off
+      Logout

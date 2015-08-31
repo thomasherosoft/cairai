@@ -1,0 +1,8 @@
+#content-wrapper
+  .heading
+    .pull-left.user_name Feed Contents
+    .pull-right.select_book
+      %select.sselect
+        %option{:value => "volvo"} Books
+        %option{:value => "saab"} Comics
+  = render :partial => "content", :locals => { :search_result => @search_result }

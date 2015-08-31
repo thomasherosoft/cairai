@@ -1,0 +1,109 @@
+#content-wrapper
+  .container
+    .row
+      .col-md-8.bg_pdf
+        .pdf_box
+          .embed-responsive.embed-responsive-4by3
+            %iframe{:frameborder => "0", :height => "900px;", :scrolling => "no", :src => "/pdfjs/web/viewer.html?file=#{@book.attachment.url}#page=1&zoom=page-fit"}
+        .book_mark_box
+          .col-md-6.col-xs-6
+            = link_to image_tag('Icons/odnoklassniki-Social-Icon.png'), "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st._surl=cairai.com/books/#{@book.slug}&title=#{@book.title}", :target => "_blank"
+            = link_to image_tag('Icons/vkontakte-Social-Icon.png'), "http://vkontakte.ru/share.php?url=cairai.com/books/#{@book.slug}", :target => "_blank"
+            = link_to image_tag('Icons/facebook.png'), "http://www.facebook.com/sharer.php?u=cairai.com/books/#{@book.slug}&t=#{@book.title}", :target => "_blank"
+            = link_to image_tag('Icons/Twitter-Social-Icon.png'), "http://twitter.com/share?text=#{@book.title}&url=cairai.com/books/#{@book.slug}", :target => "_blank"
+            = link_to image_tag('Icons/Google-Social-Icon.png'), "https://plus.google.com/share?url=cairai.com/books/#{@book.slug}", :target => "_blank"
+            = link_to image_tag('Icons/Reddit-Social-Icon.png'), "http://reddit.com/submit?url=cairai.com/books/#{@book.slug}&title=#{@book.title}", :target => "_blank"
+            = link_to image_tag('Icons/Pintrest-Social-Icon.png'), "http://pinterest.com/pin/create/link/?url=cairai.com/books/#{@book.slug}", :target => "_blank"
+            = link_to image_tag('Icons/tumblr-social-icon.png'), "http://www.tumblr.com/share/link?url=cairai.com/books/#{@book.slug}&name=#{@book.title}", :target => "_blank"
+            = link_to image_tag('Icons/digg-social-icon.png'), "http://digg.com/submit?url=cairai.com/books/#{@book.slug}&title=#{@book.title}", :target => "_blank"
+          .col-md-6.col-xs-6
+            .pull-right
+              = link_to image_tag('Icons/Favorite'), '#', :class => "mrg-lft10"
+              = link_to image_tag('Icons/Book-Bookmark'), 'javascript:void(0)', :class => "mrg-lft10", :onclick => "$('#book-page-bookmark').submit();"
+              = link_to image_tag('Icons/Fullscreen'), '#', :class => "mrg-lft10"
+              - if user_signed_in?
+                = render :partial => "bookmarks/new_bookmark", :locals => { :resource => @book }
+      .col-md-4
+        - 8.times do
+          .row.pad-lft-30
+            .col-md-4.slide_img.pad-lft0
+              %img{:src => "/assets/image.png"}
+            .col-md-8.desc
+              %h2
+                %a{:href => "#"} Title
+              %span User
+              %p Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id,
+    .col-md-12.mrg-btm50
+      .col-md-12.mar-bot20.pad-lft0
+        .subscribe_user
+          .col-md-4
+            %h1 #{@book.title.camelize}
+            = image_tag @book.book_cover.photo.url(:medium)  
+            %span 
+              = link_to("#{@book.user.username}", user_content_feed_path(@book.user))
+          .col-md-8
+            .book-comic-like-dislike
+              = link_to image_tag('like.png'), like_books_path(@book), :title => "Like Book"
+              %span.count-text #{@book.get_likes.count}
+              .popover-markup
+                %a.trigger{:href => "javascript:void(0);"} 
+                  %img{ :src => "/assets/dislike.png" }
+                .head.hide Dislike
+                .content.hide
+                  .form-group
+                    %input.form-control{:placeholder => "Type message here…", :type => "text"}
+                  %button.btn.btn-success.btn-block{:type => "submit"}
+                    Save
+              %span.count-text #{@book.get_dislikes.count}      
+              .clearfix      
+              %span.count-text #{@book.unique_views_count} Views
+      %button.btn.btn-success{:type => "button"} Subscribe
+      %button.btn-warning.btn-lg{:type => "button"} Premium Subscriber
+      %p.mar-top30.txt-justify
+        #{@book.description}
+      .col-md-8.mar-bot20
+        .book-show-hide-information{ :style => "display: none;"}
+          %hr
+          .col-md-2
+            %strong Category:
+          .col-md-6
+            #{@book.genre.camelcase}
+          .clearfix  
+          .col-md-2
+            %strong Licence:
+          .col-md-6
+            #{Search.licence_name @book}
+          .clearfix  
+          .col-md-2
+            %strong Author:
+          .col-md-6
+            #{@book.author}
+          .clearfix  
+          .col-md-2
+            %strong Language:
+          .col-md-6
+            #{Search.language @book}
+          .col-md-8.mar-top-35
+            %strong Tags:
+            #{@book.book_tag_list.join(", ").titleize}
+          .clearfix  
+          %hr          
+      .col-md-8.mar-bot20
+        %button.btn.btn-success{:type => "button", :style => "width:100%;", :id => "book-show-hide-details"} Show More
+      .col-md-8
+        #new-comment
+          = render :partial => "comments/new_comment", :locals => { :comment => Comment.new , :resource => @book}
+      %span.col-md-8
+        %strong ALL COMMENTS (#{@book.root_comments.count})
+      %hr.col-md-8    
+        #comment-reply-area
+          = render :partial => "comments/comments", :locals => { :resource => @book }
+:javascript
+  setInterval(function(){ 
+    console.log(localStorage['current_pdf_page']);
+    $("#bookmark_page_number").val(localStorage['current_pdf_page']);
+  }, 2000);
+  
+
+          
+            

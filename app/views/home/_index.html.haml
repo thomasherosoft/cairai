@@ -1,0 +1,8 @@
+.row.img_content.content_bg
+  %h1 Top Books:
+  #books_list_data
+    = render :partial => "books_list", :locals => { :books => books }
+.row.img_content.content_bg.mar-top30
+  %h1 Top Comics:
+  #comics_list_data
+    = render :partial => "comics_list", :locals => { :comics => comics }

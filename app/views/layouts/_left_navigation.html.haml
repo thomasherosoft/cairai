@@ -1,0 +1,105 @@
+- if user_signed_in?
+  .row
+    #nav-col
+      %section#col-left.col-left-nano
+        #col-left-inner.col-left-nano-content
+          #user-left-box.clearfix.hidden-sm.hidden-xs.dropdown.profile2-dropdown
+            - if current_user.profile_picture.photo.blank?
+              = image_tag "/system/#{current_user.sex}/small/#{current_user.sex}.jpg"
+            - else
+              = image_tag current_user.profile_picture.photo.url(:small)
+            .user-box
+              %span.name
+                %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                  = current_user.username
+                  %i.fa.fa-angle-down
+                = render 'layouts/layout_partial/dropdown'
+              %span.status
+                %i.fa.fa-circle
+                Online
+          #sidebar-nav.collapse.navbar-collapse.navbar-ex1-collapse
+            %ul.nav.nav-pills.nav-stacked
+              %li.nav-header.nav-header-first.hidden-sm.hidden-xs Premium Subscriptions
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 1
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 2
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+            %ul.nav.nav-pills.nav-stacked
+              %li.nav-header.nav-header-first.hidden-sm.hidden-xs Subscriptions
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 1
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 2
+              %li
+                %a{:href => "#"}
+                  %i.fa.fa-user
+                  %span User 3
+      #nav-col-submenu

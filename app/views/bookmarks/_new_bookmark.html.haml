@@ -1,0 +1,14 @@
+- unless resource.bookmark_by current_user
+  = simple_form_for :bookmark, :url => bookmarks_path, :html => {:id => "book-page-bookmark"} do |b|
+    = b.hidden_field :user_id, :value => current_user.id
+    = b.hidden_field :bookmarkable_id, :value => resource.id
+    = b.hidden_field :bookmarkable_type, :value => resource.class.name
+    = b.hidden_field :page_number, :value => "1"
+    = b.submit "create bookmark", :style => "display: none;"
+- else
+  = simple_form_for :bookmark, :url => bookmark_path(resource), :html => {:id => "book-page-bookmark", :method => :put} do |b|
+    = b.hidden_field :user_id, :value => current_user.id
+    = b.hidden_field :bookmarkable_id, :value => resource.id
+    = b.hidden_field :bookmarkable_type, :value => resource.class.name
+    = b.hidden_field :page_number, :value => "1"
+    = b.submit "Update bookmark", :style => "display: none;"

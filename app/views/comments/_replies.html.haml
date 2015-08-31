@@ -1,0 +1,23 @@
+- replies.each do |reply|
+  %li.left.clearfix
+    .story
+      .story-content
+        .col-md-2
+          %span.chat-img.pull-left
+            %span.mar-right30
+            = image_tag reply.user.profile_picture.photo.url(:tiny), :class => "img-circle"
+        .col-md-10
+          .header
+            %strong.primary-font #{reply.user.fullname}
+            %small.pull-right.text-muted
+              %span.fa.fa-clock-o>
+              &nbsp;#{distance_of_time_in_words(Time.now, reply.created_at)}
+          %p #{reply.body}
+          %footer.story-footer
+            = link_to(like_path(reply), :class => "story-likes-link", :remote => true, :title => "Like reply" ) do
+              %i.fa.fa-thumbs-up.fa-lg
+              #{reply.get_likes.count} Likes
+            %span.dislike
+              = link_to(dislike_path(reply), :class => "story-likes-link", :remote => true, :title => "Dislike reply" ) do
+                %i.fa.fa-thumbs-down.fa-lg.mar-lft5
+                #{reply.get_dislikes.count} Dislikes

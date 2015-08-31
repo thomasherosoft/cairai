@@ -1,0 +1,2 @@
+$('#new-comment').html('#{escape_javascript(render :partial => "comments/new_comment", :locals => { :comment => Comment.new, :resource => @resource })}');
+$('#comment-reply-area').html('#{escape_javascript(render :partial => "comments/comments", :locals => { :resource => @resource })}');

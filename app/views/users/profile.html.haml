@@ -1,0 +1,68 @@
+#content-wrapper
+  .container
+    .row
+      .col-md-12.col-sm-12
+        .panel-heading
+          %h1
+            %strong #{@profile.username.pluralize} Profile
+          %hr
+          .row
+            .col-md-3.col-lg-3{:align => "center"}
+              - if current_user.profile_picture.photo.blank?
+                = image_tag "/system/#{current_user.sex}/medium/#{current_user.sex}.jpg", :class => "profile-picture img-responsive"
+              - else
+                = image_tag current_user.profile_picture.photo.url(:medium), :class => "profile-picture img-responsive"
+            .col-md-9.col-lg-9
+              %table.table.table-user-information
+                %tbody
+                  %tr
+                    %td First Name:
+                    %td #{@profile.first_name}
+                  %tr
+                    %td Last Name:
+                    %td #{@profile.last_name}
+                  %tr
+                    %td Member Since:
+                    %td #{@profile.created_at.strftime('%m/%d/%Y')}
+                  %tr
+                    %td Username:
+                    %td #{@profile.username}
+                  %tr
+                    %td Age:
+                    - if @profile.age.present?
+                      %td #{@profile.age}
+                    - else
+                      %td ---
+                  %tr
+                    %td Country:
+                    - if @profile.country_code.present?
+                      %td #{@profile.country_code}
+                    - else
+                      %td --- 
+                  %tr
+                    %td Sex:
+                    - if @profile.sex.present?
+                      %td #{@profile.sex}
+                    - else
+                      %td ---
+                  %tr
+                    %td First Language:
+                    - if @profile.language_first.present?
+                      %td #{@profile.language_first}
+                    - else
+                      %td ---
+                  %tr
+                    %td Second Language:
+                    - if @profile.language_second.present?
+                      %td #{@profile.language_second}
+                    - else
+                      %td ---
+                  %tr
+                    %td Address:
+                    - if @profile.address.present?
+                      %td #{@profile.address}
+                    - else
+                      %td ---
+              .pull-right            
+                = link_to "Edit", edit_user_registration_path, :class => "btn btn-lg btn-success", :method => :get
+                = link_to "Cancel", "/", :class => "btn btn-lg btn-success", :method => :get

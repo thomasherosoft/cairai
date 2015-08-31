@@ -1,0 +1,9 @@
+.container
+  .row.pad60
+    .col-lg-12
+      .row
+        %div{:class => "alert alert-error", :id => "fflash"}
+          %a.close{"data-dismiss" => "alert", :href => "#"} ×
+          %ul
+            %li
+              = @messsage

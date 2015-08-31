@@ -1,0 +1,48 @@
+%header#header-navbar.navbar
+  .container
+    .row.clearfix
+      .col-md-3.col-sm-3
+        .col-md-6.col-sm-8
+          = link_to(image_tag('cairai-logo.png', :class => "pull-left normal-logo logo-white"), root_path, :class => "navbar-brand", :id => "logo", :method => :get)  
+        - if user_signed_in?
+          .col-md-2.col-sm-2
+            %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", :type => "button"}
+              %span.sr-only Toggle navigation
+              %span.fa.fa-bars
+            .nav-no-collapse.navbar-left.pull-left.hidden-sm.hidden-xs
+              %ul.nav.navbar-nav.pull-left
+                %li
+                  %a#make-small-nav.btn
+                    %i.fa.fa-bars
+      = simple_form_for :search, :url => search_path, :html => {:method => :get} do |s|
+        .col-md-5.col-sm-5.col-xs-12.search_box
+          .col-md-9.col-sm-8.col-xs-6
+            #custom-search-input
+              .input-group.col-md-12
+                %span.input-group-btn
+                  = s.button :button, :class => "btn btn-info btn-lg" do
+                    %i.fa.fa-search
+                = s.input :search_text, :placeholder => "Search", :required => false, :label => false, :class => "form-control input-lg", :input_html => { :value => params.has_key?(:search) ? params[:search][:search_text] : "" } 
+          .col-md-3.col-xs-9.col-sm-4.col-xs-6.pull-left
+            = s.select(:type, options_for_select([["Book", "book"], ["Comic", "comic"]], :selected => params.has_key?(:search) ? params[:search][:type] : ""), {:prompt => "Select ..."}, {:class => "sselect"})
+      - if user_signed_in?    
+        #header-nav.nav-no-collapse.col-md-3.col-xs-6.col-sm-3.pull-right
+          %ul.nav.navbar-nav.pull-left
+            %li
+              %a
+                %img{:src => "/assets/coin.png"}
+                  %span.count 25
+          %ul.nav.navbar-nav.pull-right    
+            %li.dropdown.profile-dropdown
+              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                - if current_user.profile_picture.photo.blank?
+                  = image_tag "/system/#{current_user.sex}/tiny/#{current_user.sex}.jpg"
+                - else
+                  = image_tag current_user.profile_picture.photo.url(:tiny)
+                %span.hidden-xs
+                  = current_user.username
+                %b.caret
+              = render 'layouts/layout_partial/dropdown'
+      - else
+        .col-md-4.col-xs-4.col-sm-4.blog
+          = link_to "Login", new_session_path(User), :class => "pull-right"

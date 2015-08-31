@@ -1,0 +1,73 @@
+#content-wrapper-registeraion-edit
+  = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }) do |f|
+    #user-profile.row
+      .col-lg-3.col-md-4.col-sm-4
+        .main-box.clearfix
+          %header.main-box-header.clearfix
+            %h2 #{resource.fullname}
+          .main-box-body.clearfix
+            .profile-status
+              %i.fa.fa-circle
+              Online
+            - if current_user.profile_picture.photo.blank?
+              = image_tag "/system/#{current_user.sex}/medium/#{current_user.sex}.jpg", :class => "profile-img img-responsive center-block", :id => "user-profile-picture"
+            - else
+              = image_tag current_user.profile_picture.photo.url(:medium), :class => "profile-img img-responsive center-block", :id => "user-profile-picture"
+            = f.file_field :photo, :style => "display:none;"
+            .profile-message-btn.center-block.text-center
+              %a.btn.btn-success{:href => "#", :onclick => "$('#user_photo').trigger('click');"}
+                Upload Picture
+            %span.photo-error
+              = f.error :photo
+            .profile-details
+              %ul.fa-ul
+                %li
+                  %i.fa-li.fa.fa-file>
+                  Comics:
+                  %span #{current_user.comics.count}
+                %li
+                  %i.fa-li.fa.fa-book>
+                  Books:
+                  %span #{current_user.books.count}
+      .col-lg-8.col-md-7.col-sm-7.col-xs-8.col-xs-offset-1
+        %fieldset
+          / Text input
+          .form-group
+            = f.input :first_name, autofocus: true, :class => "form-control"
+          .form-group
+            = f.input :last_name, autofocus: false, :class => "form-control"
+          .form-group.required
+            = f.input :username, autofocus: false, :class => "form-control", :disabled => true, :required => false
+          .form-group
+            %label.string.optional.control-label Age 
+            = f.select(:age, [*3..100], {}, { :class => 'form-control', :disabled => true, :title => "To update your age please update your birthday" })
+          .form-group
+            = f.input :country_code, autofocus: false, :class => "form-control", :prompt => "Select Country Code"
+          .form-group
+            = f.input :address, autofocus: false, :class => "form-control"
+          .form-group.required
+            = f.input :sex, collection: [["Male","male"], ["Female","female"], ["Androgyne","androgyne"]], :prompt => "Select Your Sex", :required => false
+          .form-group
+            %label.string.optional.control-label First Language
+            = f.select(:language_first, options_from_collection_for_select(LanguageList::COMMON_LANGUAGES, "name", "name"),{ :prompt => "Select the Language of Content" }, { :class => "form-control" })
+          .form-group
+            %label.string.optional.control-label Second Language
+            = f.select(:language_second, options_from_collection_for_select(LanguageList::COMMON_LANGUAGES, "name", "name"), { :prompt => "Select the Language of Content" }, { :class => "form-control" })
+          .form-group.required
+            = f.input :email, autofocus: false, :class => "form-control"
+          - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+            %p
+              Currently waiting confirmation for: #{resource.unconfirmed_email}
+          .form-group.required
+            %label.string.optional.control-label Birthday
+            = f.input :birthday, as: :date, start_year: Date.today.year - 90, end_year: Date.today.year - 12, order: [:day, :month, :year], :input_html => {:maxlength =>2,:style=> 'width:30%; margin-left:7px; margin-top: 0px; margin-bottom: 10px; display: inline'}, :label => false, :prompt => { day: 'Select day', month: 'Select month', year: 'Select year' }, :required => false   
+          .form-group
+            = f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false
+          .form-group  
+            = f.input :password_confirmation, required: false
+          .form-group.required  
+            = f.input :current_password, hint: "we need your current password to confirm your changes", required: false  
+          .form-group
+            .pull-right
+              = f.button :submit, "Update", :class => "btn btn-lg btn-success"
+              = link_to "Cancel", "/", :class => "btn btn-lg btn-success"

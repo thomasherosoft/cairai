@@ -1,0 +1,35 @@
+- unless search_result.empty?
+  .row.mar-top30.bg
+    - search_result.each do |result|
+      .col-md-12.col-sm-12.comic_listing
+        .col-md-2.col-sm-2.slide_img.pad-lft0.index_img_height
+          = image_tag result.image.photo.url(:medium)
+        .col-md-10.col-sm-10
+          %h2
+            - if result.class.name.eql?("Book")
+              = link_to "#{result.title.camelize}", book_path(result), :title => "#{result.title.camelize}"
+            - else
+              = link_to "#{result.title.camelize}", comic_path(result), :title => "#{result.title.camelize}"
+          %span #{result.user.fullname}
+          %p
+            = "#{result.description}"
+        .col-md-12.col-sm-12
+          .col-md-6.col-sm-6
+            %span
+              = "#{result.genre.camelize}"
+          .col-md-6.col-sm-6
+            .pull-right
+              = image_tag('like.png')
+              %span.count-text #{result.get_likes.count}
+              = image_tag('dislike.png')
+              %span.count-text #{result.get_dislikes.count}    
+- else
+  .col-md-12.col-sm-12.mar-top30 
+    .alert.alert-warning
+      %button.close{"data-dismiss" => "alert", :type => "button"} &times;
+      %strong Warning!
+      Sorry, No contents available...  
+          
+.row
+  .center
+  = paginate search_result

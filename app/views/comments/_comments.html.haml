@@ -1,0 +1,45 @@
+%ul.feed_back
+  - resource.root_comments.each do |comment|
+    %li.left.clearfix
+      .story
+        .story-content
+          .col-md-2
+            %span.chat-img.pull-left
+              %span.mar-right30
+                - if comment.user.profile_picture.photo.blank?
+                  = image_tag "/system/#{comment.user.sex}/small/#{comment.user.sex}.jpg"
+                - else
+                  = image_tag comment.user.profile_picture.photo.url(:small)
+          .col-md-10
+            .header
+              %strong.primary-font #{comment.user.username}
+              %small.pull-right.text-muted
+                %span.fa.fa-clock-o>
+                  &nbsp;#{distance_of_time_in_words(Time.now, comment.created_at)}
+                - if current_user && current_user.eql?(comment.user)
+                  = link_to("javascript:void(0);", :class => "story-likes-link-action", :title => "Edit Comment", :onclick => "$('.edit-section').hide();$('#edit-area-#{comment.id}').show();" ) do
+                    %i.fa.fa-pencil.fa-lg
+                - if current_user && (current_user.eql?(comment.user) || current_user.eql?(resource.user))
+                  = link_to(comment_path(comment), :class => "story-likes-link-action", :title => "Delete Comment", :method => :delete, :remote => true, :data => {:confirm => "Are you sure to delete this comment ?"} ) do
+                    %i.fa.fa-times.fa-lg
+            %p #{comment.body}
+            %footer.story-footer
+              = link_to(like_path(comment), :class => "story-likes-link", :remote => true, :title => "Like comment" ) do
+                %i.fa.fa-thumbs-up.fa-lg
+                #{comment.get_likes.count} Likes
+              %span.dislike
+                = link_to(dislike_path(comment), :class => "story-likes-link", :remote => true, :title => "Dislike comment" ) do
+                  %i.fa.fa-thumbs-down.fa-lg.mar-lft5
+                  #{comment.get_dislikes.count} Dislikes
+              %a.story-comments-link{:href => "javascript:void(0);", :onclick => "$('.reply-section').hide();$('#reply-area-#{comment.id}').show();", :title => "Reply on comment"}
+                %i.fa.fa-reply.fa-lg.mar-lft5
+                Reply
+              %div{ :id => "reply-area-#{comment.id}", :class => "reply-section", :style => "display: none;" }
+                = render :partial => "comments/new_reply", :locals => { :reply => Comment.new, :parent => comment, :resource => resource }
+              - if current_user && current_user.eql?(comment.user)
+                %div{ :id => "edit-area-#{comment.id}", :class => "edit-section", :style => "display: none;" }
+                  %hr
+                  = render :partial => "comments/edit_comment", :locals => { :comment => comment, :resource => resource }    
+      - if comment.has_children?
+        %ul.mar-top-35
+          = render :partial => "comments/replies", :locals => { :replies => comment.children }

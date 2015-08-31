@@ -1,0 +1,8 @@
+%hr
+= simple_form_for reply, remote: true do |r|
+  = r.input :body, :label => false, :placeholder => "Write your reply here...", :required => false
+  = r.input :commentable_id, :as => :hidden, :input_html => { :value => resource.id }
+  = r.input :commentable_type, :as => :hidden, :input_html => { :value => resource.class.name }
+  = r.input :parent_id, :as => :hidden, :input_html => { :value => parent.id }
+  .pull-right  
+    = r.submit "Post Reply", :class => "btn btn-success"

@@ -1,0 +1,6 @@
+- if user_signed_in?
+  #content-wrapper
+    = render :partial => "index", :locals => { :books => @books, :comics => @comics }
+- else
+  #content-container
+    = render :partial => "index", :locals => { :books => @books, :comics => @comics }    

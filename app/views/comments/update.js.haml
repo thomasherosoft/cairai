@@ -1,0 +1,7 @@
+- if @comment.errors.any? && @parent.nil? 
+  $('#new-comment').html('#{escape_javascript(render :partial => "comments/new_comment", :locals => { :comment => @comment, :resource => @resource })}');
+- elsif @comment.errors.any? && !@parent.nil?
+  $("#reply-area-#{@parent.id}").html('#{escape_javascript(render :partial => "comments/new_reply", :locals => { :reply => @comment, :parent => @parent, :resource => @resource })}'); 
+- else
+  $('#new-comment').html('#{escape_javascript(render :partial => "comments/new_comment", :locals => { :comment => Comment.new, :resource => @resource })}');
+  $('#comment-reply-area').html('#{escape_javascript(render :partial => "comments/comments", :locals => { :resource => @resource })}');  

@@ -1,0 +1,22 @@
+#content-wrapper
+  #user-profile.row
+    %h1 
+      %strong New Content
+    .border_nav
+      %ul#two_tebs.nav.nav-tabs
+        %li.active
+          %a{"data-toggle" => "tab", :href => "#Main_1"} Book
+        %li
+          %a{"data-toggle" => "tab", :href => "#Main_2"} Comic
+    .panel-body
+      #myTabContent.tab-content
+        #Main_1.tab-pane.active
+          %h1
+            Book
+          = simple_form_for [@user, @book] do |b| 
+            = render 'books/Books-comic-partials/newupload', :b => b  
+        #Main_2.tab-pane
+          %h1
+            Comic
+          = simple_form_for [@user, @comic] do |c| 
+            = render 'books/Books-comic-partials/newuploadcomic', :c => c   

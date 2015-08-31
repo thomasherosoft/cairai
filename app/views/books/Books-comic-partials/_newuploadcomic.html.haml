@@ -1,0 +1,77 @@
+.col-md-6
+  %fieldset
+    .form-group.required
+      = c.input :title, autofocus: true, :class => "form-control", :required => false
+    .form-group.required
+      = c.input :description, autofocus: false, :class => "form-control", :required => false
+    .form-group.required
+      = c.input :author, autofocus: false, :class => "form-control", :required => false
+    .form-group.required
+      = c.input :url_name, :as => :string, autofocus: false, :class => "form-control", :required => false, :placeholder => "http://www.Cairai.com/"
+    .form-group.required
+      -if c.error :license_type
+        %label.string.optional.control-label{ :style => "color: #a94442;" } License
+      -else
+        %label.string.optional.control-label License
+      = c.select(:license_type, Search::BOOK_AND_COMIC_LICENSE_TYPES, { :prompt => "Select your license" }, { :class => "sselect" })
+      %span.help-block
+        = c.error :license_type
+    .form-group.required
+      -if c.error :language
+        %label.string.optional.control-label{ :style => "color: #a94442;" } Language
+      -else
+        %label.string.optional.control-label Language
+      = c.select(:language, options_from_collection_for_select(LanguageList::COMMON_LANGUAGES, "iso_639_1", "name"),{ :prompt => "Select the Language of Content" }, { :class => "sselect" })
+      %span.help-block
+        = c.error :language
+    .form-group.required
+      -if c.error :genre
+        %label.string.optional.control-label{ :style => "color: #a94442;" } Genre
+      -else
+        %label.string.optional.control-label Genre
+      = c.select(:genre, Search::BOOK_AND_COMIC_CONTENT_TYPES, { :prompt => "Select Content genre" }, { :class => "sselect" })
+      %span.help-block
+        = c.error :genre
+      .form-group
+      = c.input :comic_tags, :input_html => {"data-role" => "tagsinput"}  
+    .form-group
+      %label.string.optional.control-label Age Restriction
+      = c.select(:age_restriction, Search::BOOK_AND_COMIC_AGE_RESTRICTION, {}, { :class => "sselect" })
+    .form-group
+      -if c.error :availability
+        %label.string.optional.control-label{ :style => "color: #a94442;" } Availability
+      -else
+        %label.string.optional.control-label Availability
+      = c.select(:availability, Search::BOOK_AND_COMIC_SCHEDULE_CATEGORY, {}, { :class => "sselect" })
+      %span.help-block
+        = c.error :availability  
+    .form-group.required  
+      .upload.fs-upload-element.fs-upload
+        .fs-upload-target
+          = c.input :attachment, autofocus: false, :class => "form-control"
+          %span 
+            = @comic.attachment_file_name 
+    .form-group 
+      = c.input :login_require, as: :boolean, :class => "form-control"
+    .form-group 
+      = c.input :turn_off_ads, as: :boolean, :class => "form-control"    
+.col-md-6
+  = c.simple_fields_for :image do |img|
+    .image
+      .pull-left.col-md-6.col-xs-12.col-sm-6
+        %h4.center
+          Best If Image (350X350)px
+        = img.file_field :photo, :style => "display:none;"
+        = image_tag "image.png", :id => "comic-cover-photo"
+        %a.btn.btn-primary.mrg-top-10{:href => "#", :onclick => "$('#comic_image_attributes_photo').trigger('click');"}
+          Add Cover Picture
+    .clearfix      
+    .form-group
+      %span.photo-error
+        %span.help-block
+          = img.error :image          
+.col-md-12      
+  .form-group
+    .pull-left
+      = c.button :submit, "Save", :class => "btn btn-lg btn-success"
+      = link_to "Cancel", "/", :class => "btn btn-lg btn-success"

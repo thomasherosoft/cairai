@@ -1,0 +1,48 @@
+#content-wrapper
+  .heading
+    .pull-left.user_name #{current_user.username}
+    .pull-right.select_book
+      = simple_form_for :search, :url => user_comics_path(@user), :html => {:method => :get, :id => "comics_filter_form"} do |s|
+        = select_tag "category", options_for_select(Search::BOOK_AND_COMIC_SEARCH_CATEGORY, @category), :class => "sselect", :onchange => "$('#comics_filter_form').submit();"
+        = s.submit "Filter", :style => "display:none;"
+  - unless @comics.empty?
+    .row.mar-top30.bg.mar-bottom30
+      - @comics.each do |comic|
+        .col-md-12.col-sm-12.comic_listing
+          .col-md-2.col-sm-2.slide_img.pad-lft0
+            = link_to(image_tag(comic.comic_cover.photo.url(:medium)), comic_path(comic), :title => "#{comic.title.camelize}")
+          .col-md-10.col-sm-10
+            .action-links
+              = link_to(comic_path(comic), html_options = { :method => :get }) do
+                %i.fa.fa-file-text-o.fa-fw
+                Show  
+              = link_to(edit_user_comic_path(@user, comic), html_options = { :method => :get }) do
+                %i.fa.fa-pencil.fa-fw
+                Edit
+              = link_to(user_comic_path(@user, comic), html_options = { :method => :delete, :data => {:confirm => "Are you sure to delete this comic ?"} }) do
+                %i.fa.fa-trash-o.fa-fw
+                Delete 
+            %h2
+              = link_to "#{comic.title.camelize}", comic_path(comic), :title => "#{comic.title.camelize}"
+            %span #{comic.user.fullname}
+            %p
+              = "#{comic.description}"
+          .col-md-12.col-sm-12
+            .col-md-6.col-sm-6
+              %span
+                = "#{comic.genre.camelize}"
+            .col-md-6.col-sm-6
+              .pull-right
+                = image_tag('like.png')
+                %span.count-text #{comic.get_likes.count}
+                = image_tag('dislike.png')
+                %span.count-text #{comic.get_dislikes.count}    
+  - else
+    .row.mar-top30 
+      .alert.alert-warning
+        %button.close{"data-dismiss" => "alert", :type => "button"} &times;
+        %strong Warning!
+        Sorry, No comics available in your account yet...           
+  .row
+    .center
+    = paginate @comics  

@@ -1,0 +1,19 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Cairai
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    //%link{:href => "//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400", :rel => "stylesheet", :type => "text/css"}
+    = csrf_meta_tags
+  %body.theme-blue
+    #theme-wrapper
+      = render 'layouts/header'
+      #flash-messages
+        = render 'shared/flash_messages'
+      #page-wrapper.container
+        //- unless current_page?(about_path) || current_page?(legal_path) || current_page?(faq_path)
+        = render 'layouts/left_navigation'
+        = yield
+    = render 'layouts/footer'

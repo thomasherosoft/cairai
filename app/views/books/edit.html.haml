@@ -1,0 +1,71 @@
+#content-wrapper
+  #user-profile.row
+    %h1 
+      %strong Edit Book
+    .panel-body
+      = simple_form_for [@user, @book] do |b| 
+        .col-md-6
+          %fieldset
+            .form-group.required
+              = b.input :title, autofocus: true, :class => "form-control", :required => false
+            .form-group.required
+              = b.input :description, autofocus: false, :class => "form-control", :required => false
+            .form-group.required
+              = b.input :author, autofocus: false, :class => "form-control", :required => false  
+            .form-group.required
+              = b.input :url_name, :as => :string, autofocus: false, :class => "form-control", :required => false, :disabled => true
+            .form-group.required
+              -if b.error :license_type
+                %label.string.optional.control-label{ :style => "color: #a94442;" } License
+              -else
+                %label.string.optional.control-label License
+              = b.select(:license_type, Search::BOOK_AND_COMIC_LICENSE_TYPES, { :prompt => "Select your license" }, { :class => "sselect" })
+              %span.help-block
+                = b.error :license_type
+            .form-group.required
+              -if b.error :language
+                %label.string.optional.control-label{ :style => "color: #a94442;" } Language
+              -else
+                %label.string.optional.control-label Language
+              = b.select(:language, options_from_collection_for_select(LanguageList::COMMON_LANGUAGES, "iso_639_1", "name"),{ :prompt => "Select the Language of Content" }, { :class => "sselect" })
+            .form-group.required
+              -if b.error :genre
+                %label.string.optional.control-label{ :style => "color: #a94442;" } Genre
+              -else
+                %label.string.optional.control-label Genre
+              = b.select(:genre, Search::BOOK_AND_COMIC_CONTENT_TYPES, { :prompt => "Select book genre" }, { :class => "sselect" })
+              %span.help-block
+                = b.error :genre
+            .form-group
+              %label.string.optional.control-label Age Restriction
+              = b.select(:age_restriction, Search::BOOK_AND_COMIC_AGE_RESTRICTION, {}, { :class => "sselect" })
+            .form-group.required  
+              .upload.fs-upload-element.fs-upload
+                .fs-upload-target
+                  = b.input :attachment, autofocus: false, :class => "form-control"
+                  %span 
+                    = @book.attachment_file_name 
+            .form-group 
+              = b.input :login_require, as: :boolean, :class => "form-control"
+            .form-group 
+              = b.input :turn_off_ads, as: :boolean, :class => "form-control"             
+        .col-md-6
+          = b.simple_fields_for :image do |img|
+            .image
+              .pull-left.col-md-6.col-xs-12.col-sm-6
+                = img.file_field :photo, :style => "display:none;"
+                = image_tag @book.book_cover.photo.url(:medium), :id => "book-cover-photo"
+                %a.btn.btn-primary.mrg-top-10{:href => "#", :onclick => "$('#book_image_attributes_photo').trigger('click');"}
+                  Add Cover Picture
+            .clearfix      
+            .form-group
+              %span.photo-error
+                %span.help-block
+                  = b.error :photo
+            .form-group.mrg-top70
+              = b.input :book_tags, :input_html => {"data-role" => "tagsinput", :value => @book.book_tag_list.join(",")}      
+        .col-md-12      
+          .form-group
+            .pull-left
+              = b.button :submit, "Update", :class => "btn btn-lg btn-success"
+              = link_to "Cancel", "/", :class => "btn btn-lg btn-success"
